@@ -1,0 +1,12 @@
+<div style="display: flex; height: 100vh;">
+  <app-sidebar (onSelect)="selection = $event"></app-sidebar>
+  <div style="flex: 1;">
+    <app-map-view [selection]="selection"></app-map-view>
+  </div>
+</div>
+
+
+
+
+
+

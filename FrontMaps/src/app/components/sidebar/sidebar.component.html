@@ -1,0 +1,146 @@
+<!-- Toggle Button -->
+    <button 
+      class="sidebar-toggle" 
+      (click)="toggleSidebar()"
+      [ngClass]="{'active': isOpen}">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar Overlay -->
+    <div 
+      class="sidebar-overlay" 
+      [ngClass]="{'active': isOpen}" 
+      (click)="closeSidebar()">
+    </div>
+
+    <!-- Sidebar -->
+    <div 
+      class="sidebar" 
+      [ngClass]="{'active': isOpen, 'light-mode': isLightMode}">
+      
+      <div class="sidebar-header">
+        <h3><i class="fas fa-map-marked-alt me-2"></i>Depot Manager</h3>
+        <button class="close-btn" (click)="closeSidebar()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="sidebar-content">
+        <!-- All Depots Button -->
+        <div class="section-header">
+          <button 
+            class="section-btn all-depots-btn"
+            [ngClass]="{'active': showAllDepots}"
+            (click)="handleAllDepotsClick()">
+            <div class="section-icon">
+              <i class="fas fa-building"></i>
+            </div>
+            <div class="section-info">
+              <div class="section-title">All Depots</div>
+              <div class="section-subtitle">{{ data.length }} locations</div>
+            </div>
+            <div class="section-arrow">
+              <i class="fas fa-eye"></i>
+            </div>
+          </button>
+        </div>
+
+        <!-- Depot List -->
+        <div class="depot-list">
+          <div *ngFor="let depot of data" class="depot-item">
+            <!-- Depot Header -->
+            <button 
+              class="section-btn depot-btn"
+              [ngClass]="{'active': selectedDepotId === depot.depotId}"
+              (click)="handleDepotClick(depot)">
+              <div 
+                class="section-icon depot-icon" 
+                [style.color]="getDepotColor(depot.depotId)">
+                <i class="fas fa-building"></i>
+              </div>
+              <div class="section-info">
+                <div class="section-title">{{ depot.depotName }}</div>
+                <div class="section-subtitle">{{ getTotalClients(depot) }} clients • {{ depot.roles.length }} roles</div>
+              </div>
+              <div class="section-arrow">
+                <i class="fas" [ngClass]="openDepots[depot.depotId] ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+              </div>
+            </button>
+
+            <!-- Roles Dropdown -->
+            <div 
+              class="dropdown-content" 
+              [ngClass]="{'open': openDepots[depot.depotId]}">
+              <div *ngFor="let role of depot.roles" class="role-item">
+                <button 
+                  class="section-btn role-btn"
+                  [ngClass]="{'active': selectedRoleId === role.roleId}"
+                  (click)="handleRoleClick(role)">
+                  <div class="section-icon role-icon">
+                    <i class="fas fa-user-tie"></i>
+                  </div>
+                  <div class="section-info">
+                    <div class="section-title">{{ role.roleName }}</div>
+                    <div class="section-subtitle">{{ role.tournees.length }} routes</div>
+                  </div>
+                  <div class="section-arrow">
+                    <i class="fas" [ngClass]="openRoles[role.roleId] ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                  </div>
+                </button>
+
+                <!-- Tournees Dropdown -->
+                <div 
+                  class="dropdown-content" 
+                  [ngClass]="{'open': openRoles[role.roleId]}">
+                  <div *ngFor="let tournee of role.tournees" class="tournee-item">
+                    <button 
+                      class="section-btn tournee-btn"
+                      [ngClass]="{'active': selectedTourneeId === tournee.tourneeId}"
+                      (click)="handleTourneeClick(tournee)">
+                      <div class="section-icon tournee-icon">
+                        <i class="fas fa-route"></i>
+                      </div>
+                      <div class="section-info">
+                        <div class="section-title">{{ tournee.tourneeName }}</div>
+                        <div class="section-subtitle">{{ tournee.clients.length }} stops</div>
+                      </div>
+                      <div class="section-arrow">
+                        <i class="fas" [ngClass]="openTournees[tournee.tourneeId] ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                      </div>
+                    </button>
+
+                    <!-- Clients Dropdown -->
+                    <div 
+                      class="dropdown-content" 
+                      [ngClass]="{'open': openTournees[tournee.tourneeId]}">
+                      <div *ngFor="let client of tournee.clients" class="client-item">
+                        <button 
+                          class="section-btn client-btn"
+                          [ngClass]="{'active': selectedClientId === client.id}"
+                          (click)="handleClientClick(client)">
+                          <div class="section-icon client-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                          </div>
+                          <div class="section-info">
+                            <div class="section-title">{{ client.name }}</div>
+                            <div class="section-subtitle">{{ client.lat.toFixed(4) }}, {{ client.lon.toFixed(4) }}</div>
+                          </div>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="sidebar-actions" *ngIf="selectedDepot && !showAllDepots">
+          <button class="action-btn optimize-btn" (click)="optimizeVisit()">
+            <i class="fas fa-magic me-2"></i>
+            Optimize Route
+          </button>
+        </div>
+      </div>
+    </div>

@@ -1,0 +1,10 @@
+body {
+  background-color: #121212;
+  color: #f0f0f0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.map-container {
+  background-color: #1e1e1e;
+  border: 2px solid #333;
+}
