@@ -1,0 +1,13 @@
+<Context>
+    <Resource
+            name="jdbc/restauDS"
+            auth="Container"
+            type="javax.sql.DataSource"
+            driverClassName="org.mariadb.jdbc.Driver"
+            url="jdbc:mariadb://localhost:3306/restau"
+            username="root"
+            password="emjad"
+            maxTotal="20"
+            maxIdle="10"
+            maxWaitMillis="-1"/>
+</Context>
